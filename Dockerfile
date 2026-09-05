@@ -9,6 +9,5 @@ RUN dotnet publish -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /cv-management-app
-COPY --from=build /cv-management-app/out . 
-EXPOSE 8080
+COPY --from=build /cv-management-app/out .
 ENTRYPOINT ["dotnet", "cv-management-app.dll"]
