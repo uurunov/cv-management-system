@@ -16,9 +16,12 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-app.MapGet("/app/health-check", () => "Ok!");
+app.MapGet("/api/health-check", () => "Ok!");
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthorization();
 
