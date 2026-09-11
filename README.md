@@ -1,8 +1,6 @@
 # CV Management System — Course Project Checklist
 
-Stack: ASP.NET Core Web API + EF Core + PostgreSQL (Render) · Angular + PrimeNG +
-Tailwind (tailwindcss-primeui plugin) · Render deployment (native auto-deploy on
-push).
+Stack: ASP.NET Core Web API + EF Core + PostgreSQL (Render) · Angular + Optimus UI + Tailwind · Render deployment (native auto-deploy on push).
 
 ---
 
@@ -11,7 +9,7 @@ push).
 - [ ] Solution structure (API project, maybe a shared DTOs/contracts project)
 - [ ] EF Core + Npgsql configured, first migration applied
 - [ ] Render: Postgres instance provisioned, API deployed
-- [ ] Angular app scaffolded, PrimeNG + Tailwind (tailwindcss-primeui) wired in
+- [ ] Angular app scaffolded, Optimus UI + Tailwind wired in
 - [ ] Deployed "Hello, world" end-to-end (Angular calls API calls DB) — **always keep this deployable from here on**
 
 ## Phase 1 — Auth & Roles

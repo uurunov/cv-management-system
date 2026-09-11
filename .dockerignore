@@ -1,0 +1,22 @@
+# Git and editor metadata
+.git
+.gitignore
+.vscode
+.DS_Store
+
+# .NET build output
+bin
+obj
+
+# Angular and Node build output
+client/node_modules
+client/dist
+client/.angular
+
+# Local logs and environment files
+*.log
+.env
+.env.*
+
+# Documentation not needed in the image build context
+README.md

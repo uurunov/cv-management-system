@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
 {
@@ -27,4 +28,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapFallbackToFile("index.html");
 app.Run();
