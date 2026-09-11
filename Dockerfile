@@ -7,7 +7,7 @@ RUN dotnet publish -c Release -o out
 
 FROM node:24-alpine AS client-build
 WORKDIR /client
-COPY ["client/package.json", "client/package-lock.json"] ./
+COPY ["client/package.json", "client/package-lock.json", "./"]
 RUN npm ci
 COPY client/. .
 RUN npm run build
