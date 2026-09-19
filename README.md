@@ -6,15 +6,15 @@ Stack: ASP.NET Core Web API + EF Core + PostgreSQL (Render) · Angular + Optimus
 
 ## Phase 0 — Foundation
 
-- [ ] Solution structure (API project, maybe a shared DTOs/contracts project)
-- [ ] EF Core + Npgsql configured, first migration applied
-- [ ] Render: Postgres instance provisioned, API deployed
-- [ ] Angular app scaffolded, Optimus UI + Tailwind wired in
-- [ ] Deployed "Hello, world" end-to-end (Angular calls API calls DB) — **always keep this deployable from here on**
+- [x] Solution structure (API project, maybe a shared DTOs/contracts project)
+- [x] EF Core + Npgsql configured, first migration applied
+- [x] Render: Postgres instance provisioned, API deployed
+- [x] Angular app scaffolded, Optimus UI + Tailwind wired in
+- [x] Deployed "Hello, world" end-to-end (Angular calls API calls DB)
 
 ## Phase 1 — Auth & Roles
 
-- [ ] ASP.NET Core Identity set up
+- [x] ASP.NET Core Identity set up
 - [ ] Roles: Candidate, Recruiter, Administrator
 - [ ] Social login — minimum 2 providers (e.g. Google + Facebook/GitHub)
 - [ ] Non-authenticated users can: register, sign in, browse positions read-only, view public stats
