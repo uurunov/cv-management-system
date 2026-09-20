@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
 using cv_management_app.Models;
+using cv_management_app.Data;
+using cv_management_app.Seeding;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,13 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    await IdentitySeeder.SeedRolesAsync(scope.ServiceProvider);
+    await IdentitySeeder.SeedAdminUserAsync(scope.ServiceProvider, app.Configuration);
+}
+
 app.UseStaticFiles();
 
 app.MapGet("/api/health-check", () => "Ok!");

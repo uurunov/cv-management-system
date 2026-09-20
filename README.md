@@ -15,7 +15,7 @@ Stack: ASP.NET Core Web API + EF Core + PostgreSQL (Render) · Angular + Optimus
 ## Phase 1 — Auth & Roles
 
 - [x] ASP.NET Core Identity set up
-- [ ] Roles: Candidate, Recruiter, Administrator
+- [x] Roles: Candidate, Recruiter, Administrator
 - [ ] Social login — minimum 2 providers (e.g. Google + Facebook/GitHub)
 - [ ] Non-authenticated users can: register, sign in, browse positions read-only, view public stats
 - [ ] Non-authenticated users blocked from: creating/editing positions, CVs, comments, likes, personal pages
