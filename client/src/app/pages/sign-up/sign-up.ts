@@ -1,17 +1,28 @@
 import { Component, inject, signal } from '@angular/core';
-import { email, form, FormField, required, FormRoot } from '@angular/forms/signals';
-import { Router } from '@angular/router';
+import { Auth, UserRole } from '../../services/auth';
 import { ButtonModule } from '@openng/optimus-ui/button';
+import {
+  email,
+  form,
+  FormField,
+  required,
+  FormRoot,
+  minLength,
+  maxLength,
+  pattern,
+} from '@angular/forms/signals';
 import { IconFieldModule } from '@openng/optimus-ui/iconfield';
 import { InputIconModule } from '@openng/optimus-ui/inputicon';
 import { InputTextModule } from '@openng/optimus-ui/inputtext';
 import { MessageModule } from '@openng/optimus-ui/message';
-import { Auth } from '../../services/auth';
+import { Router } from '@angular/router';
+import { SelectButtonModule } from '@openng/optimus-ui/selectbutton';
 import { MessageService } from '@openng/optimus-ui/api';
 
-export interface LoginData {
+export interface RegisterData {
   email: string;
   password: string;
+  role: UserRole;
 }
 
 @Component({
@@ -23,31 +34,40 @@ export interface LoginData {
     InputIconModule,
     InputTextModule,
     MessageModule,
+    SelectButtonModule,
   ],
-  selector: 'app-sign-in',
-  styleUrl: './sign-in.css',
-  templateUrl: './sign-in.html',
+  selector: 'app-sign-up',
+  styleUrl: './sign-up.css',
+  templateUrl: './sign-up.html',
 })
-export class SignIn {
-  protected router = inject(Router);
+export class SignUp {
   protected authService = inject(Auth);
   private messageService = inject(MessageService);
-  private readonly INITIAL_MODEL = { email: '', password: '' };
+  protected router = inject(Router);
+  roleOptions = signal(['Candidate', 'Recruiter']);
+  private readonly INITIAL_MODEL = { email: '', password: '', role: 'Candidate' as UserRole };
 
   isLoading = signal(false);
-  loginFormModel = signal<LoginData>({ ...this.INITIAL_MODEL });
+  registerFormModel = signal<RegisterData>({ ...this.INITIAL_MODEL });
 
-  loginForm = form(
-    this.loginFormModel,
+  registerForm = form(
+    this.registerFormModel,
     (schemaPath) => {
       required(schemaPath.email, { message: 'Email is required' });
       email(schemaPath.email, { message: 'Please enter a valid email address' });
       required(schemaPath.password, { message: 'Password is required' });
+      required(schemaPath.role, { message: 'Role is required' });
+      minLength(schemaPath.password, 6, { message: 'Password must be at least 6 characters' });
+      maxLength(schemaPath.password, 50, { message: 'Password is too long' });
+      pattern(schemaPath.password, /^(?=.*[A-Z])(?=.*[a-z])(?=.*[^A-Za-z0-9]).{6,}$/, {
+        message:
+          'Password must contain at least one uppercase, lowercase, and non alphanumeric character',
+      });
     },
     {
       submission: {
         action: async (field) => {
-          await this.authService.login(field().value()).subscribe({
+          await this.authService.register(field().value()).subscribe({
             next: async () => {
               field().reset({ ...this.INITIAL_MODEL });
               await this.authService.fetchCurrentUser().subscribe(() => {
@@ -56,7 +76,7 @@ export class SignIn {
               this.messageService.add({
                 severity: 'success',
                 summary: 'Success',
-                detail: 'Login successful.',
+                detail: 'Registration successful.',
               });
             },
             error: (err) => {
@@ -67,7 +87,8 @@ export class SignIn {
                 const errorMsg: string[] = err.error;
                 finalErrorMessage = errorMsg[0];
               } else {
-                finalErrorMessage = err.error?.message ?? 'Login failed. Please try again later.';
+                finalErrorMessage =
+                  err.error?.message ?? 'Registration failed. Please try again later.';
               }
 
               this.messageService.add({

@@ -4,6 +4,13 @@ Stack: ASP.NET Core Web API + EF Core + PostgreSQL (Render) · Angular + Optimus
 
 ---
 
+### Admin Credentials
+
+Email: admin@email.com
+Password: Admin123$
+
+---
+
 ## Phase 0 — Foundation
 
 - [x] Solution structure (API project, maybe a shared DTOs/contracts project)
@@ -16,8 +23,9 @@ Stack: ASP.NET Core Web API + EF Core + PostgreSQL (Render) · Angular + Optimus
 
 - [x] ASP.NET Core Identity set up
 - [x] Roles: Candidate, Recruiter, Administrator
-- [ ] Social login — minimum 2 providers (e.g. Google + Facebook/GitHub)
-- [ ] Non-authenticated users can: register, sign in, browse positions read-only, view public stats
+- [x] Social login — minimum 2 providers (Google + Microsoft)
+- [x] Non-authenticated users can: register, sign in
+- [ ] Non-authenticated users can: browse positions read-only, view public stats
 - [ ] Non-authenticated users blocked from: creating/editing positions, CVs, comments, likes, personal pages
 - [ ] Admins can drop their own Admin role
 
@@ -92,7 +100,7 @@ Stack: ASP.NET Core Web API + EF Core + PostgreSQL (Render) · Angular + Optimus
 ## Optional (only after ALL of the above is done)
 
 - [ ] PDF export with QR code linking back to the app
-- [ ] Form auth w/ email confirmation (alt. to social login)
+- [ ] Form auth with email confirmation (alt. to social login)
 - [ ] Badges/achievements system + downloadable SVG panel
 - [ ] Field "tuning" options (length limits, regex validators, numeric ranges)
 - [ ] CSV/Excel export of CVs for a given position

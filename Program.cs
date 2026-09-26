@@ -2,6 +2,9 @@ using Scalar.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+
 using cv_management_app.Models;
 using cv_management_app.Data;
 using cv_management_app.Seeding;
@@ -21,6 +24,18 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddAuthentication()
+    .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+    })
+    .AddMicrosoftAccount(MicrosoftAccountDefaults.AuthenticationScheme, options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"]!;
+        options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]!;
+    });
 
 var app = builder.Build();
 

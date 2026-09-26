@@ -1,1 +1,94 @@
-<router-outlet />
+<div class="h-screen flex flex-col items-center gap-3 py-3 bg-gray-100">
+  <p-toolbar
+    class="flex justify-between items-center"
+    [style]="{
+      width: '80%',
+      borderRadius: '2rem',
+      padding: '1rem 1.5rem',
+    }"
+  >
+    <ng-template #start>
+      <p-button
+        [outlined]="true"
+        [rounded]="true"
+        severity="contrast"
+        [style]="{ padding: '0' }"
+        (click)="router.navigate(['home'])"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36" height="36">
+          <circle cx="18" cy="18" r="15.84" fill="none" stroke="#000000" stroke-width="0.25" />
+
+          <path
+            d="M 15.84 12.96
+           L 12.24 12.96
+           A 2.52 2.52 0 0 0 9.72 15.48
+           L 9.72 20.52
+           A 2.52 2.52 0 0 0 12.24 23.04
+           L 15.84 23.04"
+            fill="none"
+            stroke="#000000"
+            stroke-width="2.3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+          <path
+            d="M 18.72 12.96
+           L 21.6 23.04
+           L 24.48 12.96"
+            fill="none"
+            stroke="#000000"
+            stroke-width="2.3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </p-button>
+    </ng-template>
+
+    <ng-template #end>
+      @if (authService.initialAuthChecked()) {
+        @if (authService.currentUser(); as user) {
+          <div class="flex align-items justify-center gap-3 flex-wrap">
+            <p-chip [label]="user.email" icon="pi pi-user" class="text-sm" />
+            <p-button
+              label="Log out"
+              severity="danger"
+              size="small"
+              [rounded]="true"
+              (click)="logout()"
+            />
+          </div>
+        } @else {
+          @if (currentRoute() === '/home') {
+            <div class="flex align-items gap-3">
+              <p-button
+                label="Sign up"
+                severity="primary"
+                size="small"
+                [rounded]="true"
+                (click)="router.navigate(['signup'])"
+              />
+              <p-button
+                label="Log in"
+                severity="secondary"
+                size="small"
+                [rounded]="true"
+                (click)="router.navigate(['login'])"
+              />
+            </div>
+          }
+        }
+      } @else {
+        <i class="pi pi-spin pi-spinner" style="color: var(--p-button-info-background)"></i>
+      }
+    </ng-template>
+  </p-toolbar>
+
+  <div class="grow w-4/5 bg-white rounded-4xl text-[#1f2937]">
+    <router-outlet />
+  </div>
+</div>
+
+<p-toast position="bottom-right" />
+<p-confirmdialog />
