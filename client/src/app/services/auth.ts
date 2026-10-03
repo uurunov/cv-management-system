@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/internal/operators/finalize';
 import { tap } from 'rxjs/internal/operators/tap';
 import { RegisterData } from '../pages/sign-up/sign-up';
 import { LoginData } from '../pages/sign-in/sign-in';
+import { SalesforceData } from '../pages/profile/profile';
 
 export interface CurrentUser {
   email: string;
@@ -15,6 +16,11 @@ export interface CurrentUser {
 
 export interface AuthResponse {
   message: string;
+}
+
+export interface SalesforceResponse {
+  accountId: string;
+  contactId: string;
 }
 
 export type UserRole = 'Candidate' | 'Recruiter';
@@ -51,6 +57,10 @@ export class Auth {
 
   loginWithProvider(provider: 'Google' | 'Microsoft', role: UserRole = 'Candidate'): void {
     window.location.href = `/api/auth/external/${provider}?role=${role}`;
+  }
+
+  sendToSalesforce(userInfo: SalesforceData): Observable<SalesforceResponse> {
+    return this.http.post<SalesforceResponse>('/api/salesforce/contact', userInfo);
   }
 
   fetchCurrentUser(): Observable<CurrentUser | null> {

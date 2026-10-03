@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using cv_management_app.Models;
 using cv_management_app.Data;
 using cv_management_app.Seeding;
+using cv_management_app.Salesforce;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,9 @@ builder.Services.AddAuthentication()
         options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"]!;
         options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"]!;
     });
+
+builder.Services.Configure<SalesforceOptions>(builder.Configuration.GetSection(SalesforceOptions.SectionName));
+builder.Services.AddHttpClient<ISalesforceService, SalesforceService>();
 
 var app = builder.Build();
 

@@ -1,0 +1,125 @@
+<div class="h-[inherit] flex items-center justify-center">
+  @if (authService.currentUser(); as user) {
+    <p-card
+      class="pt-6 pb-2"
+      [style]="{
+        width: '25rem',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+      }"
+    >
+      <ng-template #header>
+        <p-avatar icon="pi pi-user" size="xlarge" shape="circle" />
+      </ng-template>
+      <ng-template #title> {{ user.email }} </ng-template>
+      <ng-template #subtitle>
+        <div class="card flex items-center gap-2 flex-wrap">
+          @for (role of user.roles; track role) {
+            <p-chip [label]="role" />
+          }
+        </div>
+      </ng-template>
+      <ng-template #footer>
+        <div class="flex gap-4">
+          <p-button
+            label="Add to Salesforce CRM"
+            severity="secondary"
+            class="w-full"
+            [outlined]="true"
+            styleClass="w-full"
+            (click)="showDialog()"
+          />
+        </div>
+      </ng-template>
+    </p-card>
+
+    <p-dialog
+      header="Add your details to our CRM"
+      [(visible)]="visible"
+      [modal]="true"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+      [style]="{ width: '50vw' }"
+      [draggable]="false"
+      [resizable]="false"
+    >
+      <form [formRoot]="sforceForm" pFocusTrap class="flex flex-col items-center gap-3">
+        <div class="w-3/4 flex flex-col gap-1">
+          <label for="firstName">First name</label>
+          <input
+            pInputText
+            id="firstName"
+            aria-describedby="firstName-help"
+            [formField]="sforceForm.firstName"
+            pSize="small"
+          />
+        </div>
+
+        <div class="w-3/4 flex flex-col gap-1">
+          <label for="lastName">Last name</label>
+          <input
+            pInputText
+            id="lastName"
+            aria-describedby="lastName-help"
+            [formField]="sforceForm.lastName"
+            pSize="small"
+          />
+        </div>
+
+        <div class="w-3/4 flex flex-col gap-1">
+          <label for="company">Company</label>
+          <input
+            pInputText
+            id="company"
+            aria-describedby="company-help"
+            [formField]="sforceForm.company"
+            pSize="small"
+          />
+        </div>
+
+        <div class="w-3/4 flex flex-col gap-1">
+          <label for="phone">Phone</label>
+          <p-inputgroup>
+            <p-inputgroup-addon [style]="{ padding: '6px 10px' }">+</p-inputgroup-addon>
+            <input
+              pInputText
+              id="phone"
+              pKeyFilter="num"
+              aria-describedby="phone-help"
+              [formField]="sforceForm.phone"
+              pSize="small"
+            />
+          </p-inputgroup>
+        </div>
+
+        <div class="w-3/4 flex flex-col gap-1">
+          <label for="jobTitle">Job title</label>
+          <input
+            pInputText
+            id="jobTitle"
+            aria-describedby="jobTitle-help"
+            [formField]="sforceForm.jobTitle"
+            pSize="small"
+          />
+        </div>
+
+        <div class="w-3/4 flex flex-col gap-1">
+          <label for="description">Description</label>
+          <textarea
+            rows="5"
+            cols="30"
+            pTextarea
+            [formField]="sforceForm.description"
+            pSize="small"
+            variant="filled"
+          ></textarea>
+        </div>
+
+        <div class="flex justify-center gap-2 mt-4">
+          <p-button label="Cancel" severity="secondary" (click)="closeDialog()" />
+          <p-button label="Send to Salesforce" type="submit" />
+        </div>
+      </form>
+    </p-dialog>
+  }
+</div>

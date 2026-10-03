@@ -50,7 +50,13 @@
       @if (authService.initialAuthChecked()) {
         @if (authService.currentUser(); as user) {
           <div class="flex align-items justify-center gap-3 flex-wrap">
-            <p-chip [label]="user.email" icon="pi pi-user" class="text-sm" />
+            <p-button
+              label="My Profile"
+              severity="contrast"
+              size="small"
+              [rounded]="true"
+              (click)="router.navigate(['profile'])"
+            />
             <p-button
               label="Log out"
               severity="danger"

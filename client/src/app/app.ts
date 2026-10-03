@@ -3,21 +3,13 @@ import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { ButtonModule } from '@openng/optimus-ui/button';
 import { Auth } from './services/auth';
 import { ToolbarModule } from '@openng/optimus-ui/toolbar';
-import { ChipModule } from '@openng/optimus-ui/chip';
 import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
 import { ToastModule } from '@openng/optimus-ui/toast';
 import { ConfirmDialogModule } from '@openng/optimus-ui/confirmdialog';
 import { filter } from 'rxjs/operators';
 
 @Component({
-  imports: [
-    RouterOutlet,
-    ButtonModule,
-    ToolbarModule,
-    ChipModule,
-    ToastModule,
-    ConfirmDialogModule,
-  ],
+  imports: [RouterOutlet, ButtonModule, ToolbarModule, ToastModule, ConfirmDialogModule],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
@@ -40,6 +32,7 @@ export class App implements OnInit {
 
   protected logout() {
     this.authService.logout().subscribe(() => {
+      this.router.navigate(['home']);
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
