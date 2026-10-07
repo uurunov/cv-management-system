@@ -22,7 +22,6 @@ export class App implements OnInit {
   private messageService = inject(MessageService);
 
   ngOnInit() {
-    this.authService.fetchCurrentUser().subscribe();
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {

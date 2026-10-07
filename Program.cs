@@ -9,6 +9,7 @@ using cv_management_app.Models;
 using cv_management_app.Data;
 using cv_management_app.Seeding;
 using cv_management_app.Salesforce;
+using cv_management_app.Dropbox;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +40,9 @@ builder.Services.AddAuthentication()
     });
 
 builder.Services.Configure<SalesforceOptions>(builder.Configuration.GetSection(SalesforceOptions.SectionName));
+builder.Services.Configure<DropboxOptions>(builder.Configuration.GetSection(DropboxOptions.SectionName));
 builder.Services.AddHttpClient<ISalesforceService, SalesforceService>();
+builder.Services.AddHttpClient<IDropboxService, DropboxService>();
 
 var app = builder.Build();
 

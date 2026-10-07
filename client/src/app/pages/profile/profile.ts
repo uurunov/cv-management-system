@@ -10,8 +10,8 @@ import { InputTextModule } from '@openng/optimus-ui/inputtext';
 import { KeyFilterModule } from '@openng/optimus-ui/keyfilter';
 import { InputGroupModule } from '@openng/optimus-ui/inputgroup';
 import { InputGroupAddonModule } from '@openng/optimus-ui/inputgroupaddon';
-import { TextareaModule } from '@openng/optimus-ui/textarea';
 import { MessageService } from '@openng/optimus-ui/api';
+import { SelectButtonModule } from '@openng/optimus-ui/selectbutton';
 
 export interface SalesforceData {
   firstName: string;
@@ -20,6 +20,11 @@ export interface SalesforceData {
   phone: string;
   jobTitle: string;
   description: string;
+}
+
+export interface SupportTicketData {
+  summary: string;
+  priority: 'Low' | 'Average' | 'High';
 }
 
 @Component({
@@ -36,7 +41,7 @@ export interface SalesforceData {
     KeyFilterModule,
     InputGroupModule,
     InputGroupAddonModule,
-    TextareaModule,
+    SelectButtonModule,
   ],
   selector: 'app-profile',
   styleUrl: './profile.css',
@@ -45,7 +50,6 @@ export interface SalesforceData {
 export class Profile {
   protected authService = inject(Auth);
   private messageService = inject(MessageService);
-  visible = signal(false);
   private readonly INITIAL_MODEL = {
     firstName: '',
     lastName: '',
@@ -54,7 +58,12 @@ export class Profile {
     jobTitle: '',
     description: '',
   };
+  private readonly INITIAL_TICKET_MODEL = {
+    summary: '',
+    priority: 'Average' as 'Low' | 'Average' | 'High',
+  };
 
+  sfDialog = signal(false);
   sforceFormModel = signal<SalesforceData>({ ...this.INITIAL_MODEL });
   sforceForm = form(
     this.sforceFormModel,
@@ -66,11 +75,10 @@ export class Profile {
     {
       submission: {
         action: async (field) => {
-          console.log(field().value());
           await this.authService.sendToSalesforce(field().value()).subscribe({
             next: async () => {
               field().reset({ ...this.INITIAL_MODEL });
-              this.closeDialog();
+              this.sfDialog.set(false);
               this.messageService.add({
                 severity: 'success',
                 summary: 'Success',
@@ -98,11 +106,45 @@ export class Profile {
     },
   );
 
-  showDialog() {
-    this.visible.set(true);
-  }
-
-  closeDialog() {
-    this.visible.set(false);
-  }
+  priorityOptions = signal(['Low', 'Average', 'High']);
+  spTicketDialog = signal(false);
+  spTicketFormModel = signal<SupportTicketData>({ ...this.INITIAL_TICKET_MODEL });
+  spTicketForm = form(
+    this.spTicketFormModel,
+    (schemaPath) => {
+      required(schemaPath.summary, { message: 'Summary is required' });
+    },
+    {
+      submission: {
+        action: async (field) => {
+          await this.authService.submitSupportTicket(field().value()).subscribe({
+            next: async () => {
+              field().reset({ ...this.INITIAL_TICKET_MODEL });
+              this.spTicketDialog.set(false);
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'Support ticket submitted successfully.',
+              });
+            },
+            error: (err) => {
+              console.log(err);
+              let finalErrorMessage = '';
+              if (err.status === 400) {
+                const errorMsg: string[] = err.error;
+                finalErrorMessage = errorMsg[0];
+              } else {
+                finalErrorMessage = err.error?.message ?? 'Failed to submit support ticket.';
+              }
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Failure',
+                detail: finalErrorMessage,
+              });
+            },
+          });
+        },
+      },
+    },
+  );
 }

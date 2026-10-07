@@ -7,7 +7,8 @@ import { finalize } from 'rxjs/internal/operators/finalize';
 import { tap } from 'rxjs/internal/operators/tap';
 import { RegisterData } from '../pages/sign-up/sign-up';
 import { LoginData } from '../pages/sign-in/sign-in';
-import { SalesforceData } from '../pages/profile/profile';
+import { SalesforceData, SupportTicketData } from '../pages/profile/profile';
+import { tick } from '@angular/core/testing';
 
 export interface CurrentUser {
   email: string;
@@ -21,6 +22,10 @@ export interface AuthResponse {
 export interface SalesforceResponse {
   accountId: string;
   contactId: string;
+}
+
+export interface SupportTicketResponse {
+  file: string;
 }
 
 export type UserRole = 'Candidate' | 'Recruiter';
@@ -61,6 +66,14 @@ export class Auth {
 
   sendToSalesforce(userInfo: SalesforceData): Observable<SalesforceResponse> {
     return this.http.post<SalesforceResponse>('/api/salesforce/contact', userInfo);
+  }
+
+  submitSupportTicket(ticketData: SupportTicketData): Observable<SupportTicketResponse> {
+    return this.http.post<SupportTicketResponse>('/api/support-tickets', {
+      ...ticketData,
+      link: 'http://localhost:4200/profile',
+      positionTitle: null,
+    });
   }
 
   fetchCurrentUser(): Observable<CurrentUser | null> {
